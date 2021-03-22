@@ -1,0 +1,138 @@
+---
+title: "EDA & Data Preprocessing in R"
+author: " Rohman Prasetyo Wibowo"
+date: "3/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Pendahuluan
+Bagain ini merupakan brntuk R Makdwon tentang EDA & Data Preprocessing
+
+### Import Library
+```{r}
+if(!require(tidyverse)) install.packages("tidyverse")
+if(!require(skimr)) install.packages("skimr")
+if(!require(DataExplorer)) install.packages("DataExplorer")
+if(!require(visdat)) install.packages("visdat")
+
+library(visdat)
+library(tidyverse)
+library(skimr)
+library(DataExplorer)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(readr)
+library(tibble)
+```
+
+### Mengakses Dataset
+```{r}
+df<- read.csv("https://raw.githubusercontent.com/Iprass30/Kelas-Mahir-Pejuang-Data-2.0/main/titanic_modify%20baru.csv", sep=';',stringsAsFactors = T)
+df[0:5]
+```
+Tampilkan Dta yang akan kita analisis
+
+### Tujuan Analisis Data
+Melakukan klasifikasi penumpang yang selamat dan tidak selamat pada kasus tenggelamnya kapal Titanic.
+
+### Memahami dataset
+
+Dataset Titanic dibuat untuk membuat machine learning untuk melakukan klasifikasi biner(Selamat atau Tidak Selamat. Variabel-variabel yang terdapat pada dataset ini adalah sebagai berikut:
+
+1. PassengerId = Nomor Id Penumpang 
+2. Survived = Keterangan Selamat(0=Tidak, 1=Ya)
+3. Pclass = Kelas Tiket (1=Kelas 1, 2=Kelas 2, dst)
+4. Name = Nama Penumpang
+5. Sex = Jenis kelamin
+6. Age = Usia dalam tahun
+7. SibSp = Jumlah saudara kandung / pasangan di kapal Titanic
+8. Parch = Jumlah orang tua / anak di kapal Titanic
+9. Ticket = Nomor Tiket
+10.Fare = Harga Tiket
+11.Cabin = Nama Kabin
+12.Embarked = Pelabuhan Asal (C = Cherbourg, Q = Queenstown, S = Southampton)
+
+##Eksploratory Data Analysis
+
+### Dimensi Data
+```{r}
+dim(df)
+```
+Artinya kita memiliki data dengan 12 kolom dan 707 baris
+
+### Variabel Pada Dataset
+```{r}
+names(df)
+```
+Artinya memiliki data dengan variabel nama Passengerid, 
+```{r}
+str(df)
+```
+Kita dapat mengetahui tipe-tipe data masing-masing variabel dan nama-nama variabel dalam dataset.
+
+### Mengecek Missing Data
+
+```{r}
+sapply(df, function(x) sum(is.na(x)))
+```
+```{r}
+vis_miss(df)
+```
+
+### Melihat Korelasi Data
+```{r}
+plot_correlation(df)
+```
+
+### Melihat Statistik Data
+```{r}
+summary(df)
+```
+### Pairplot
+```{r}
+plot_scatterplot(df , by = "Survived")
+```
+
+## Data Pre Processing
+Data preprocessing ini digunakan guna menyiapkan data untuk diklasifikasi menggunakan metode SVM(Hanya Contoh).
+
+Setelah mengetahui hasil EDA di atas maka untuk hasil yang baik diperlukan beberapa hal sebagai berikut:
+1. Menghapus kolom teks yang tidak diperlukan: Name dan Ticket
+2. Mengisi NaN pada kolom Cabin dengan salah satu nama kabin tertentu, mengisi NaN pada kolom Age dengan nilai rata-ratanya
+3. Melakukan pengkodean(Encoding) pada kolom Sex , Cabin, dan Embarked
+4. Menghapus outlier
+5. Karena nilai data ada yang sangat besar dan kecil maka perlu dilakukan normalisasi
+
+Setelah data diperbaiki dilakukan langkah sebagai berikut:
+1. Memilih variabel independent dan label
+2. Membagi data menjadi data training dan data testing
+
+
+[Note] Ini hanya contoh untuk melakukan pengisian data NaN(Kosong), nama kabin mungkin menjadi penting sehingga tidak segampang itu diganti
+
+### Memperbaiki Missing Value pada Age
+
+```{r}
+df$Age=ifelse(is.na(df$Age),
+              ave(df$Age, FUN=function(x)mean(x,na.rm=TRUE)),
+              df$Age)
+```
+
+### Menghapus Outlier
+```{r}
+boxplot(df)
+```
+Maka dari hasil diatas kita telah dapat membersihkan data yang berisi NAN.
+Untuk tahap selanjutnya belum saya lengkapi dikarenakan terbatas waktu.
+
+Bismillah dilain kesempatan akan saya coba lebih maksimal.
+
+### This is the end of Notebooks
+say: Allhamdulillah, panjang banget dah
+
