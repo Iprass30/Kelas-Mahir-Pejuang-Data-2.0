@@ -41,7 +41,6 @@ Apa sih Machine Learning?
 Machine learning adalah aplikasi dari disiplin ilmu kecerdasan buatan (Artificial Intelligence) yang menggunakan teknik statistika untuk menghasilkan suatu model otomatis dari sekumpulan data, dengan tujuan memberikan komputer kemampuan untuk "belajar".
 
 
-LossSideBySide
 ![](D:/FILE KULIAH/Data Sains/Regresi/LossSideBySide.png)
 ```{r}
 if(!require(tidyverse)) install.packages("tidyverse")
